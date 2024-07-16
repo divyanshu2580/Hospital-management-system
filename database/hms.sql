@@ -1,0 +1,16 @@
+create database hospital_management_system;
+use hospital_management_system;
+show tables;
+create table patient(p_id int primary key auto_increment , p_email varchar(50) not null unique ,  p_name varchar(50) not null unique ,p_age int not null, gender char(10) not null check(gender in ('Male','Female','Others')) , address varchar(50) not null , password varchar(1000)); 
+create table doctor(d_id int primary key auto_increment , d_email varchar(50) unique not null,  d_name varchar(50) not null unique ,d_age int not null, d_gender char(8) not null check(d_gender in ('Male','Female','Others')) , d_address varchar(50) not null ,specialist varchar(30) not null , d_password varchar(1000));
+create table appointments(a_id int primary key auto_increment ,p_name varchar(50) unique references patient(p_name) ,app_date date not null , app_time time not null ,symptoms varchar(500) not null , concerns varchar(500), status varchar(20) not null check(status in("booked","Cancel","Diagnosed")) default "booked", unique un_key (app_date,app_time));
+create table app_history(app_his_id int primary key auto_increment , a_id int unique references appointments(a_id) ,p_name varchar(50) references patient(p_name) ,app_date date not null , app_time time not null ,symptoms varchar(500) not null , concerns varchar(500), status varchar(20) not null );
+create table medication(m_id int primary key auto_increment ,a_id int unique references appointments(a_id) ,  precautions varchar(150) , medications varchar(150));
+create table pat_med_history(pmh_id int primary key auto_increment,m_id int references medication(m_id) , a_id int references app_history(a_id) ,p_name varchar(50) not null references patient(p_name),app_date date not null ,app_time time not null ,symptoms varchar(500) not null, medications varchar(500));
+select * from patient;
+select * from doctor; 
+select * from appointments;
+select * from app_history;
+select * from medication;
+select * from pat_med_history;
+use testing;
